@@ -55,7 +55,7 @@ export async function getRanking(req,res){
         FROM urls r
         JOIN users s on s.id=r."userId"
         GROUP BY name, s.id
-        ORDER BY r."visitCount" DESC
+        ORDER BY SUM(r."visitCount") DESC
         LIMIT 10
         ;
             
@@ -63,16 +63,3 @@ export async function getRanking(req,res){
         res.status(200).send(result.rows)
     }catch{res.sendStatus(500)}
 }
-/*
- SELECT
-                us.id,
-                us.name,
-                COUNT(ur."userId") AS "linksCount",
-                SUM(ur."visitCount") AS "visitCount"
-            FROM users us
-            LEFT JOIN urls ur ON ur."userId"=us.id
-            GROUP BY us.id
-            ORDER BY SUM(ur."visitCount") DESC
-            LIMIT 10
-            ;
-            */
